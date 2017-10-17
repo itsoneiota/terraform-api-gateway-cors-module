@@ -1,3 +1,10 @@
-variable "resource_name" {}
-variable "resource_id"{}
-variable "rest_api_id" {}
+variable "resource_id" {
+  type = "string"
+  description = "API Gateway resource ID"
+}
+
+variable "rest_api_id" {
+  type = "string"
+  description = "API Gateway REST API ID"
+}
+

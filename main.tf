@@ -10,8 +10,11 @@ resource "aws_api_gateway_integration" "ResourceOptionsIntegration" {
   resource_id = "${var.resource_id}"
   http_method = "${aws_api_gateway_method.ResourceOptions.http_method}"
   type = "MOCK"
-  request_templates = { 
+  request_templates = {
     "application/json" = <<PARAMS
+{ "statusCode": 200 }
+PARAMS
+    "application/x-www-form-urlencoded" = <<PARAMS
 { "statusCode": 200 }
 PARAMS
   }
@@ -23,8 +26,8 @@ resource "aws_api_gateway_integration_response" "ResourceOptionsIntegrationRespo
   http_method = "${aws_api_gateway_method.ResourceOptions.http_method}"
   status_code = "200"
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-    "method.response.header.Access-Control-Allow-Methods" = "'POST,OPTIONS,GET,PUT,PATCH,DELETE'",
+    "method.response.header.Access-Control-Allow-Headers" = "'${join(",", var.headers)}'",
+    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,${join(",", var.methods)}'",
     "method.response.header.Access-Control-Allow-Origin" = "'*'"
   },
   depends_on = [

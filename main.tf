@@ -39,7 +39,7 @@ resource "aws_api_gateway_method_response" "ResourceOptions200" {
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
   http_method = "${aws_api_gateway_method.ResourceOptions.http_method}"
-  status_code = "${aws_api_gateway_integration_response.ResourceOptionsIntegrationResponse.http_method}"
+  status_code = "${aws_api_gateway_integration_response.ResourceOptionsIntegrationResponse.status_code}"
   response_models = { "application/json" = "Empty" }
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = true,

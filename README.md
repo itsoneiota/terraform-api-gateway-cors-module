@@ -5,8 +5,7 @@ This is a slim Terraform module which creates an OPTIONS method and applies a CO
 Example: 
 ```
 module "MyResourceCors" {
-  source = "github.com/carrot/terraform-api-gateway-cors-module"
-  resource_name = "MyResource"
+  source = "github.com/itsoneiota/terraform-api-gateway-cors-module"
   resource_id = "${aws_api_gateway_resource.MyResource.id}"
   rest_api_id = "${aws_api_gateway_rest_api.MyAPI.id}"
 }

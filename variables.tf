@@ -1,3 +1,7 @@
+variable "enabled" {
+  default = true
+}
+
 variable "resource_id" {
   type = "string"
   description = "API Gateway resource ID"

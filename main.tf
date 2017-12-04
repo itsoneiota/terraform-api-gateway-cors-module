@@ -28,7 +28,7 @@ resource "aws_api_gateway_integration_response" "ResourceOptionsIntegrationRespo
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
   http_method = "${aws_api_gateway_method.ResourceOptions.http_method}"
-  status_code = "200"
+  status_code = "${aws_api_gateway_method_response.ResourceOptions200.status_code}"
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'${join(",", var.headers)}'",
     "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,${join(",", var.methods)}'",
@@ -45,7 +45,7 @@ resource "aws_api_gateway_method_response" "ResourceOptions200" {
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
   http_method = "${aws_api_gateway_method.ResourceOptions.http_method}"
-  status_code = "${aws_api_gateway_integration_response.ResourceOptionsIntegrationResponse.status_code}"
+  status_code = "200"
   response_models = { "application/json" = "Empty" }
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = true,
@@ -54,4 +54,8 @@ resource "aws_api_gateway_method_response" "ResourceOptions200" {
   }
 
   count = "${var.enabled}"
+
+  depends_on = [
+    "aws_api_gateway_integration.ResourceOptionsIntegration"
+  ]
 }

@@ -1,13 +1,15 @@
 resource "aws_api_gateway_method" "ResourceOptions" {
+  count = "${var.enabled ? 1 : 0}"
+
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
   http_method = "OPTIONS"
   authorization = "NONE"
-
-  count = "${var.enabled}"
 }
 
 resource "aws_api_gateway_integration" "ResourceOptionsIntegration" {
+  count = "${var.enabled ? 1 : 0}"
+
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
   http_method = "${join("", aws_api_gateway_method.ResourceOptions.*.http_method)}"
@@ -20,11 +22,11 @@ PARAMS
 { "statusCode": 200 }
 PARAMS
   }
-
-  count = "${var.enabled}"
 }
 
 resource "aws_api_gateway_integration_response" "ResourceOptionsIntegrationResponse" {
+  count = "${var.enabled ? 1 : 0}"
+
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
   http_method = "${join("", aws_api_gateway_method.ResourceOptions.*.http_method)}"
@@ -37,11 +39,11 @@ resource "aws_api_gateway_integration_response" "ResourceOptionsIntegrationRespo
   depends_on = [
     "aws_api_gateway_integration.ResourceOptionsIntegration"
   ]
-
-  count = "${var.enabled}"
 }
 
 resource "aws_api_gateway_method_response" "ResourceOptions200" {
+  count = "${var.enabled ? 1 : 0}"
+
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
   http_method = "${join("", aws_api_gateway_method.ResourceOptions.*.http_method)}"
@@ -52,8 +54,6 @@ resource "aws_api_gateway_method_response" "ResourceOptions200" {
     "method.response.header.Access-Control-Allow-Methods" = true,
     "method.response.header.Access-Control-Allow-Origin" = true
   }
-
-  count = "${var.enabled}"
 
   depends_on = [
     "aws_api_gateway_integration.ResourceOptionsIntegration"

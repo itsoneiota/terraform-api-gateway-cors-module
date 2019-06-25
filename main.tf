@@ -10,7 +10,7 @@ resource "aws_api_gateway_method" "ResourceOptions" {
 resource "aws_api_gateway_integration" "ResourceOptionsIntegration" {
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
-  http_method = "${aws_api_gateway_method.ResourceOptions.http_method}"
+  http_method = "${join("", aws_api_gateway_method.ResourceOptions.*.http_method)}"
   type = "MOCK"
   request_templates = {
     "application/json" = <<PARAMS
@@ -27,8 +27,8 @@ PARAMS
 resource "aws_api_gateway_integration_response" "ResourceOptionsIntegrationResponse" {
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
-  http_method = "${aws_api_gateway_method.ResourceOptions.http_method}"
-  status_code = "${aws_api_gateway_method_response.ResourceOptions200.status_code}"
+  http_method = "${join("", aws_api_gateway_method.ResourceOptions.*.http_method)}"
+  status_code = "${join("", aws_api_gateway_method_response.ResourceOptions200.*.status_code)}"
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'${join(",", var.headers)}'",
     "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,${join(",", var.methods)}'",
@@ -44,7 +44,7 @@ resource "aws_api_gateway_integration_response" "ResourceOptionsIntegrationRespo
 resource "aws_api_gateway_method_response" "ResourceOptions200" {
   rest_api_id = "${var.rest_api_id}"
   resource_id = "${var.resource_id}"
-  http_method = "${aws_api_gateway_method.ResourceOptions.http_method}"
+  http_method = "${join("", aws_api_gateway_method.ResourceOptions.*.http_method)}"
   status_code = "200"
   response_models = { "application/json" = "Empty" }
   response_parameters = {
